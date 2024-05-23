@@ -10,4 +10,5 @@ public interface CatetoryService {
     Catetory createCatetory(CatetoryDTO catetoryDTO);
     Catetory updateCatetory(int id, CatetoryDTO catetoryDTO);
     void deleteCatetory(int id);
+    CatetoryDTO getCatetoryById(int id);
 }

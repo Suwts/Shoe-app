@@ -14,3 +14,17 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
+
+  mail:
+    host: smtp.gmail.com
+    post: 587
+    username: vuonglinh280202@gmail.com
+    password: idvb kgcs wlbp asil
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+

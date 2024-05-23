@@ -11,6 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductImageDTO {
-    private int product_id;
+//    private int product_id;
     private List<MultipartFile> files;
 }

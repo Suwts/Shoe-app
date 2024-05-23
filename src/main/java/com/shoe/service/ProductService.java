@@ -17,9 +17,9 @@ public interface ProductService {
     Product getProductById(int id);
     Product getProductByName(String name);
     Product createProduct(ProductDTO productDTO) throws DataNotFound;
-    Product updateProduct(int id, ProductDTO productDTO);
-    void deleteProduct(int id);
-    List<ProductImage> createImage(ProductImageDTO productImageDTO) throws Exception;
+    Product updateProduct(int id, ProductDTO productDTO, String auToken);
+    Product deleteProduct(int id, String auToken);
+    List<ProductImage> createImage(int product_id, ProductImageDTO productImageDTO) throws Exception;
     boolean existsByName(String name);
     List<Product> generateProduct();
     List<Product> getProductByIDs(String ids);

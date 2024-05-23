@@ -94,6 +94,10 @@ public class User implements UserDetails{
         this.sex = sex;
     }
 
+    public int getActive() {
+        return active;
+    }
+
     @Override
     public String getPassword() {
         return password;

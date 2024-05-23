@@ -2,6 +2,7 @@ package com.shoe.controller;
 
 import com.shoe.dto.CatetoryDTO;
 import com.shoe.entity.Catetory;
+import com.shoe.service.CatetoryService;
 import com.shoe.service.impl.CatetoryServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,17 @@ import java.util.List;
 public class CatetoryController {
 
     @Autowired
-    private CatetoryServiceImpl catetoryService;
+    private CatetoryService catetoryService;
 
     @GetMapping("/get")
     public ResponseEntity<List<Catetory>> getAllCatetory(){
         List<Catetory> catetories = catetoryService.getAllCatetories();
         return ResponseEntity.ok(catetories);
+    }
+
+    @GetMapping("/getById")
+    public ResponseEntity<CatetoryDTO> getCatetory(@RequestParam int id){
+        return ResponseEntity.ok(catetoryService.getCatetoryById(id));
     }
 
     @PostMapping("/create")

@@ -39,7 +39,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer :: disable)
                 .authorizeHttpRequests(request -> request
-                    .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/user/**").permitAll()
+                    .requestMatchers(HttpMethod.PUT, "/api/user/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/user/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasAnyAuthority(Containts.ADMIN)
+
+                    .requestMatchers(HttpMethod.GET, "/api/pay/**").permitAll()
+
+
+
                     .requestMatchers(HttpMethod.GET, "/api/brand/**").permitAll()
                     .requestMatchers(HttpMethod.POST,"/api/brand/**").hasAnyAuthority(Containts.ADMIN)
                     .requestMatchers(HttpMethod.PUT,"/api/brand/**").hasAnyAuthority(Containts.ADMIN)
@@ -51,14 +59,17 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.DELETE,"/api/catetory/**").hasAnyAuthority(Containts.ADMIN)
 
                     .requestMatchers(HttpMethod.GET,"/api/product/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/product/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/product/**").hasAnyAuthority(Containts.ADMIN)
                     .requestMatchers(HttpMethod.PUT, "/api/product/**").hasAnyAuthority(Containts.ADMIN)
                     .requestMatchers(HttpMethod.DELETE, "/api/product/**").hasAnyAuthority(Containts.ADMIN)
 
-                    .requestMatchers(HttpMethod.POST, "/api/order/**").hasAnyAuthority(Containts.USER)
+                    .requestMatchers(HttpMethod.POST, "/api/order/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/order/**").hasAnyAuthority(Containts.ADMIN, Containts.USER)
                     .requestMatchers(HttpMethod.PUT, "/api/order/**").hasAnyAuthority(Containts.ADMIN)
                     .requestMatchers(HttpMethod.DELETE, "/api/order/**").hasAnyAuthority(Containts.ADMIN)
+
+                    .requestMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/comment/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

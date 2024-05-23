@@ -13,12 +13,12 @@ public class OrderDetail {
     private int quantity;
 
     @Column(name = "money")
-    private float money;
+    private int money;
 
-    @Column(name = "productID")
+    @Column(name = "product_id")
     private int productID;
 
-    @Column(name = "orderID")
+    @Column(name = "order_id")
     private int orderID;
 
     public int getOrderDetailID() {
@@ -41,7 +41,7 @@ public class OrderDetail {
         return money;
     }
 
-    public void setMoney(float money) {
+    public void setMoney(int money) {
         this.money = money;
     }
 

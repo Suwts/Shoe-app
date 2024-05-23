@@ -41,4 +41,9 @@ public class BrandServiceImpl implements BrandService {
     public void deleteBrand(int id) {
         brandRepo.deleteById(id);
     }
+
+    @Override
+    public BrandDTO getBrandById(int id) {
+        return brandRepo.getBrandName(id);
+    }
 }

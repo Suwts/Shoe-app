@@ -20,4 +20,11 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
 
     @Query("select p from Product p where p.productID in :productIDs")
     List<Product> findProductByIds(@Param("productIDs") List<Integer> productIDs);
+
+//    @Query("select p from Product p inner join Catetory c where p.catetoryID = :catetoryID LIMIT 4")
+//    List<Product> getProductByCatetory(@Param("catetoryID") int catetoryID);
+
+    @Query("update Product p set p.image = :image where p.productID = :productID")
+    Product updateImage(@Param("image") String image, @Param("productID") int productID);
+
 }

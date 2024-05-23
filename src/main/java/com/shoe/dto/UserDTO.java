@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ReqRes{
+public class UserDTO {
     private int statusCode;
     private String error;
     private String message;
@@ -28,6 +28,8 @@ public class ReqRes{
 
     @JsonProperty("full_name")
     private String fullName;
+    private String phone_number;
+    private String adress;
 
     @JsonProperty("user_name")
     private String userName;

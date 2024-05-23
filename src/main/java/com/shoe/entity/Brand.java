@@ -2,6 +2,7 @@ package com.shoe.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -12,6 +13,7 @@ public class Brand {
     private int brandID;
     @Column(name = "name")
     private String name;
+
 
 //    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
 //    private List<Product> productList;

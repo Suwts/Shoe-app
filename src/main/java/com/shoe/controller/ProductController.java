@@ -40,22 +40,28 @@ public class ProductController {
     public ResponseEntity<ProductPageRespone> getAllProducts(
             @RequestParam(defaultValue = "") String keywords,
             @RequestParam int page , @RequestParam int limit){
-        PageRequest pageRequest = PageRequest.of(page-1, limit, Sort.by("productID").ascending());
+        PageRequest pageRequest = PageRequest.of(page-1, limit, Sort.by("productID").descending());
         Page<Product> products = productService.getProducts(keywords,pageRequest);
         int totalPage = products.getTotalPages();
         List<Product> productList = products.getContent();
         return ResponseEntity.ok(new ProductPageRespone(productList, totalPage));
     }
 
-//    @GetMapping("/get")
-//    public ResponseEntity<Product> getProductsById(@RequestParam int id){
-//        return ResponseEntity.ok(productService.getProductById(id));
-//    }
+    @GetMapping("/get/catetory")
+    public ResponseEntity<Product> getProductByCatetory(int catetoryID){
+        return ResponseEntity.ok(null);
+    }
+
 
     @GetMapping("/get")
-    public ResponseEntity<Product> getProductByName(@RequestParam String name){
-        return ResponseEntity.ok(productService.getProductByName(name));
+    public ResponseEntity<Product> getProductsById(@RequestParam int id){
+        return ResponseEntity.ok(productService.getProductById(id));
     }
+
+//    @GetMapping("/get")
+//    public ResponseEntity<Product> getProductByName(@RequestParam String name){
+//        return ResponseEntity.ok(productService.getProductByName(name));
+//    }
 
     @GetMapping("/get_ids")
     public ResponseEntity<List<Product>> getProductByIds(@RequestParam String ids){
@@ -63,17 +69,17 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createProduct(@Valid @RequestBody ProductDTO productDTO, BindingResult bindingResult) throws DataNotFound {
+    public ResponseEntity<?> createProduct(@Valid @RequestBody ProductDTO productDTO, BindingResult bindingResult,@RequestHeader("Authorization") String auToken) throws DataNotFound {
         if(bindingResult.hasErrors()){
             List<String> error = bindingResult.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList();
             return ResponseEntity.badRequest().body(error);
         }
         return ResponseEntity.ok(productService.createProduct(productDTO));
     }
-    @PostMapping(value = "/uploads", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<List<ProductImage>> createProductImage(@ModelAttribute ProductImageDTO productImageDTO) throws Exception {
+    @PostMapping(value = "/uploads/{product_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<List<ProductImage>> createProductImage(@PathVariable int product_id, @ModelAttribute ProductImageDTO productImageDTO,@RequestHeader("Authorization") String auToken) throws Exception {
 //        ProductImageDTO productImageDTO = new ProductImageDTO(productID, files);
-        List<ProductImage> productImageList = productService.createImage(productImageDTO);
+        List<ProductImage> productImageList = productService.createImage(product_id, productImageDTO);
         return ResponseEntity.ok(productImageList);
     }
 
@@ -93,14 +99,13 @@ public class ProductController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable("id") int id, @Valid @RequestBody ProductDTO productDTO){
-        return ResponseEntity.ok(productService.updateProduct(id, productDTO));
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") int id, @Valid @RequestBody ProductDTO productDTO, @RequestHeader("Authorization") String auToken){
+        return ResponseEntity.ok(productService.updateProduct(id, productDTO, auToken));
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable("id") int id){
-        productService.deleteProduct(id);
-        return ResponseEntity.ok("Successfull");
+    @DeleteMapping("/delete")
+    public ResponseEntity<Product> deleteProduct(@RequestParam int id,@RequestHeader("Authorization") String auToken){
+        return ResponseEntity.ok(productService.deleteProduct(id, auToken));
     }
 
 //    @PostMapping("/faker")

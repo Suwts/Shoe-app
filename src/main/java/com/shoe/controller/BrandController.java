@@ -1,7 +1,9 @@
 package com.shoe.controller;
 
 import com.shoe.dto.BrandDTO;
+import com.shoe.dto.CatetoryDTO;
 import com.shoe.entity.Brand;
+import com.shoe.service.BrandService;
 import com.shoe.service.impl.BrandServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +18,17 @@ import java.util.List;
 @RequestMapping("/api/brand")
 public class BrandController {
     @Autowired
-    private BrandServiceImpl brandService;
+    private BrandService brandService;
 
     @GetMapping("/get")
     public ResponseEntity<List<Brand>> getAllBrand(){
         List<Brand> brands = brandService.getAllBrands();
         return ResponseEntity.ok(brands);
+    }
+
+    @GetMapping("/getById")
+    public ResponseEntity<BrandDTO> getBrand(@RequestParam int id){
+        return ResponseEntity.ok(brandService.getBrandById(id));
     }
 
     @PostMapping("/create")

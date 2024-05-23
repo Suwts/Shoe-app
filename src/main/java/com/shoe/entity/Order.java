@@ -1,6 +1,8 @@
 package com.shoe.entity;
 
 import jakarta.persistence.*;
+
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -26,16 +28,34 @@ public class Order {
     private String payment;
 
     @Column(name = "total_money")
-    private float totalMoney;
+    private int totalMoney;
 
     @Column(name = "status")
-    private boolean status;
+    private String status;
 
     @Column(name = "user_id")
     private int userID;
 
     @Column(name = "shipping_date")
     private Date shipping_date;
+
+    @Column(name = "active")
+    private int active;
+
+    @Column(name = "shipping_method")
+    private String shipping_method;
+
+    @Column(name = "createtime")
+    private Timestamp createtime;
+
+
+    public Timestamp getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Timestamp createtime) {
+        this.createtime = createtime;
+    }
 
     public int getOrderID() {
         return orderID;
@@ -77,11 +97,11 @@ public class Order {
         this.note = note;
     }
 
-    public float getTotalMoney() {
+    public int getTotalMoney() {
         return totalMoney;
     }
 
-    public void setTotalMoney(float totalMoney) {
+    public void setTotalMoney(int totalMoney) {
         this.totalMoney = totalMoney;
     }
 
@@ -93,14 +113,29 @@ public class Order {
         this.payment = payment;
     }
 
-    public boolean isStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    public String getShipping_method() {
+        return shipping_method;
+    }
+
+    public void setShipping_method(String shipping_method) {
+        this.shipping_method = shipping_method;
+    }
 
     public int getUserID() {
         return userID;

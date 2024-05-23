@@ -12,7 +12,7 @@ public class ProductImage {
     private int productimageID;
 
     @Column(name = "product_id")
-    private int product_id;
+    private int productId;
 
     @Column(name = "image")
     private String image;
@@ -35,12 +35,12 @@ public class ProductImage {
         this.productimageID = productImageID;
     }
 
-    public int getProduct_id() {
-        return product_id;
+    public int getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(int product_id) {
-        this.product_id = product_id;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public String getImage() {

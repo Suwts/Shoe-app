@@ -10,4 +10,5 @@ public interface BrandService {
     Brand createBrand(BrandDTO brandDTO);
     Brand updateBrand(int id, BrandDTO brandDTO);
     void deleteBrand(int id);
+    BrandDTO getBrandById(int id);
 }

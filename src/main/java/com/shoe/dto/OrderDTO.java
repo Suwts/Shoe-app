@@ -1,11 +1,15 @@
 package com.shoe.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,4 +31,13 @@ public class OrderDTO {
 
     @NotEmpty(message = "Payment not empty")
     private String payment;
+
+    @NotEmpty(message = "Shipping method not empty")
+    private String shipping_method;
+
+    @NotNull(message = "Total money in product can not empty")
+    @Min(0)
+    private int total_money;
+
+    private List<CartDTO> cart_item;
 }

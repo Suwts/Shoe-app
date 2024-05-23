@@ -9,7 +9,8 @@ import java.util.List;
 public interface OrderService {
     List<Order> getAllOrder();
     Order getByID(int id) throws DataNotFound;
-    Order createOrder(OrderDTO orderDTO);
+    Order createOrder(OrderDTO orderDTO) throws DataNotFound;
     Order updateOrder(int id, OrderDTO orderDTO) throws DataNotFound;
     void deleteOrder(int id) throws DataNotFound;
+    Integer getTotalMoney(int year,int month);
 }

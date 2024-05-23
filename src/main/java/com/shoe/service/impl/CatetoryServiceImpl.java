@@ -42,4 +42,9 @@ public class CatetoryServiceImpl implements CatetoryService {
     public void deleteCatetory(int id) {
         catetoryRepo.deleteById(id);
     }
+
+    @Override
+    public CatetoryDTO getCatetoryById(int id) {
+        return catetoryRepo.getCatetoryName(id);
+    }
 }

@@ -17,7 +17,7 @@ public class Product {
     private String name;
 
     @Column(name = "price")
-    private float price;
+    private int price;
 
     @Column(name = "discount")
     private int discount;
@@ -29,16 +29,28 @@ public class Product {
     private String image;
 
     @Column(name = "catetory_id")
-    private int catetoryID;
+    private int catetory_id;
 
     @Column(name = "brand_id")
-    private int brandID;
+    private int brand_id;
 
     @Column(name = "createtime")
     private LocalDateTime createtime;
 
     @Column(name = "updatetime")
     private LocalDateTime updatetime;
+
+    @Column(name = "size")
+    private int size;
+
+    @Column(name = "number_input")
+    private int number_input;
+
+    @Column(name = "number_buy")
+    private int number_buy;
+
+    @Column(name = "active")
+    private int active;
 
 //    @ManyToOne
 //    @JoinColumn(name = "catetory_id", insertable=false, updatable=false)
@@ -67,11 +79,11 @@ public class Product {
         this.name = name;
     }
 
-    public float getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -99,22 +111,29 @@ public class Product {
         this.image = image;
     }
 
-    public int getCatetoryID() {
-        return catetoryID;
+    public int getCatetory_id() {
+        return catetory_id;
     }
 
-    public void setCatetoryID(int catetoryID) {
-        this.catetoryID = catetoryID;
+    public void setCatetory_id(int catetory_id) {
+        this.catetory_id = catetory_id;
     }
 
-    public int getBrandID() {
-        return brandID;
+    public int getBrand_id() {
+        return brand_id;
     }
 
-    public void setBrandID(int brandID) {
-        this.brandID = brandID;
+    public void setBrand_id(int brand_id) {
+        this.brand_id = brand_id;
     }
 
+    public int getNumber_input() {
+        return number_input;
+    }
+
+    public void setNumber_input(int number_input) {
+        this.number_input = number_input;
+    }
 //    public Catetory getCatetory() {
 //        return catetory;
 //    }
@@ -145,6 +164,31 @@ public class Product {
 
     public void setUpdatetime(LocalDateTime updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+
+    public int getNumber_buy() {
+        return number_buy;
+    }
+
+    public void setNumber_buy(int number_buy) {
+        this.number_buy = number_buy;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
     }
 }
 

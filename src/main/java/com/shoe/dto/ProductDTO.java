@@ -1,5 +1,6 @@
 package com.shoe.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -20,7 +21,7 @@ public class ProductDTO {
 
     @NotNull(message = "Price in product can not empty")
     @Min(0)
-    private float price;
+    private int price;
 
     @Min(0)
     @Max(100)
@@ -35,8 +36,16 @@ public class ProductDTO {
     @NotNull(message = "Catetory id in product can not empty")
     private int catetory_id;
 
+
     @NotNull(message = "Brand id in product can not empty")
     private int brand_id;
+
+    private int size;
+
+    private int number_input;
+    private int number_buy;
+
+    private int active;
 
     private List<MultipartFile> file;
 }

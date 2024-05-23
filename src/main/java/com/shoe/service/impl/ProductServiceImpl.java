@@ -5,15 +5,9 @@ import com.shoe.Utils.FileUtils;
 import com.shoe.Utils.Language;
 import com.shoe.dto.ProductDTO;
 import com.shoe.dto.ProductImageDTO;
-import com.shoe.entity.Brand;
-import com.shoe.entity.Catetory;
-import com.shoe.entity.Product;
-import com.shoe.entity.ProductImage;
+import com.shoe.entity.*;
 import com.shoe.exception.DataNotFound;
-import com.shoe.reponsitory.BrandRepo;
-import com.shoe.reponsitory.CatetoryRepo;
-import com.shoe.reponsitory.ProductImageRepo;
-import com.shoe.reponsitory.ProductRepo;
+import com.shoe.reponsitory.*;
 import com.shoe.service.ProductService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +36,9 @@ public class ProductServiceImpl implements ProductService {
     private BrandRepo brandRepo;
 
     @Autowired
+    private CommentRepo commentRepo;
+
+    @Autowired
     private ProductImageRepo productImageRepo;
 
     @Autowired
@@ -62,6 +59,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(int id) {
+        if(id == 0){
+            return null;
+        }
         return productRepo.findByProductID(id).orElseThrow(()
                 -> new RuntimeException("Product not found"));
     }
@@ -86,23 +86,33 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productDTO.getPrice());
         product.setDiscount(productDTO.getDiscount());
         product.setDescription(productDTO.getDescription());
+        product.setSize(productDTO.getSize());
+        product.setNumber_buy(productDTO.getNumber_buy());
+        product.setNumber_input(productDTO.getNumber_input());
         product.setImage(productDTO.getImage());
-        product.setCatetoryID(productDTO.getCatetory_id());
-        product.setBrandID(productDTO.getBrand_id());
+        product.setCatetory_id(productDTO.getCatetory_id());
+        product.setBrand_id(productDTO.getBrand_id());
+        product.setActive(1);
+
         return productRepo.save(product);
     }
 
     @Override
     @Transactional
-    public Product updateProduct(int id, ProductDTO productDTO) {
+    public Product updateProduct(int id, ProductDTO productDTO, String auToken) {
+
         Product product = productRepo.findByProductID(id).orElseThrow();
         product.setName(productDTO.getName());
         product.setPrice(productDTO.getPrice());
         product.setDiscount(productDTO.getDiscount());
         product.setDescription(productDTO.getDescription());
+        product.setSize(productDTO.getSize());
+        product.setNumber_buy(productDTO.getNumber_buy());
+        product.setNumber_input(productDTO.getNumber_input());
 //        product.setImage(productDTO.getImage());
-        product.setCatetoryID(productDTO.getCatetory_id());
-        product.setBrandID(productDTO.getBrand_id());
+        product.setCatetory_id(productDTO.getCatetory_id());
+        product.setBrand_id(productDTO.getBrand_id());;
+        product.setActive(1);
         Optional<Catetory> catetory = catetoryRepo.findByCatetoryID(productDTO.getCatetory_id());
         Optional<Brand> brand = brandRepo.findByBrandID(productDTO.getBrand_id());
         if(!catetory.isPresent() || !brand.isPresent()){
@@ -117,16 +127,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void deleteProduct(int id) {
-        productRepo.deleteById(id);
+    public Product deleteProduct(int id, String auToken) {
+        String token = auToken.substring(7);
+        Product product = productRepo.findByProductID(id).orElseThrow();
+        product.setActive(0);
+        return productRepo.save(product);
     }
 
     @Override
     @Transactional
-    public List<ProductImage> createImage(ProductImageDTO productImageDTO) throws IOException, DataNotFound {
+    public List<ProductImage> createImage(int product_id, ProductImageDTO productImageDTO) throws IOException, DataNotFound {
         List<MultipartFile> files = productImageDTO.getFiles();
+        Product product = productRepo.findByProductID(product_id).orElseThrow(() -> new DataNotFound(language.getLocale("data.not.found")));
         files = files == null ? new ArrayList<MultipartFile>() : files;
         List<ProductImage> productImageList = new ArrayList<>();
+        List<String> imageList = new ArrayList<>();
         if(files.size() < 5){
             for(MultipartFile file: files){
 
@@ -136,11 +151,11 @@ public class ProductServiceImpl implements ProductService {
                 if(file.getSize() < (10 * 1024 * 1024)){
                     String contentType = file.getContentType();
                     if(contentType != null && contentType.startsWith("image/")){
-                        Product product = productRepo.findByProductID(productImageDTO.getProduct_id()).orElseThrow(() -> new DataNotFound(language.getLocale("data.not.found")));
                         String fileName = FileUtils.StoreFile(file);
                         ProductImage productImage = new ProductImage();
-                        productImage.setProduct_id(product.getProductID());
+                        productImage.setProductId(product.getProductID());
                         productImage.setImage(fileName);
+                        imageList.add(fileName);
                         productImageRepo.save(productImage);
                         productImageList.add(productImage);
                     }
@@ -148,6 +163,8 @@ public class ProductServiceImpl implements ProductService {
 
 
             }
+            product.setImage(imageList.get(0));
+            productRepo.save(product);
             return productImageList;
         }
         return null;
@@ -172,8 +189,8 @@ public class ProductServiceImpl implements ProductService {
             product.setDiscount(faker.number().numberBetween(0, 60));
             product.setDescription(faker.lorem().sentence());
 //        product.setImage(productDTO.getImage());
-            product.setCatetoryID(faker.number().numberBetween(1,4));
-            product.setBrandID(faker.number().numberBetween(1,6));
+            product.setCatetory_id(faker.number().numberBetween(1,4));
+            product.setBrand_id(faker.number().numberBetween(1,6));
             productRepo.save(product);
         }
         return null;

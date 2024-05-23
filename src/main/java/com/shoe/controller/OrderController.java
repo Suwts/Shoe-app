@@ -20,7 +20,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createOrder(@Valid @RequestBody OrderDTO orderDTO, BindingResult bindingResult){
+    public ResponseEntity<?> createOrder(@Valid @RequestBody OrderDTO orderDTO, BindingResult bindingResult) throws DataNotFound {
         if(bindingResult.hasErrors()){
             List<String> error = bindingResult.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList();
             return ResponseEntity.badRequest().body(error);
@@ -31,6 +31,11 @@ public class OrderController {
     @GetMapping("/getAll")
     public ResponseEntity<List<Order>> getAllOrder(){
         return ResponseEntity.ok(orderService.getAllOrder());
+    }
+
+    @GetMapping("/revenue")
+    public ResponseEntity<Integer> getTotalMoney(@RequestParam int year, @RequestParam int month,@RequestHeader("Authorization") String auToken){
+        return ResponseEntity.ok(orderService.getTotalMoney(year, month));
     }
 
     @GetMapping("/get/{id}")
