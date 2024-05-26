@@ -46,6 +46,15 @@ public class ProductController {
         List<Product> productList = products.getContent();
         return ResponseEntity.ok(new ProductPageRespone(productList, totalPage));
     }
+    @GetMapping("/gets")
+    public ResponseEntity<ProductPageRespone> getAdminProducts(
+            @RequestParam int page , @RequestParam int limit){
+        PageRequest pageRequest = PageRequest.of(page-1, limit, Sort.by("productID").descending());
+        Page<Product> products = productService.getAdminProducts(pageRequest);
+        int totalPage = products.getTotalPages();
+        List<Product> productList = products.getContent();
+        return ResponseEntity.ok(new ProductPageRespone(productList, totalPage));
+    }
 
     @GetMapping("/get/catetory")
     public ResponseEntity<Product> getProductByCatetory(int catetoryID){
@@ -77,7 +86,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.createProduct(productDTO));
     }
     @PostMapping(value = "/uploads/{product_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<List<ProductImage>> createProductImage(@PathVariable int product_id, @ModelAttribute ProductImageDTO productImageDTO,@RequestHeader("Authorization") String auToken) throws Exception {
+    public ResponseEntity<List<ProductImage>> createProductImage(@PathVariable int product_id, @ModelAttribute ProductImageDTO productImageDTO) throws Exception {
 //        ProductImageDTO productImageDTO = new ProductImageDTO(productID, files);
         List<ProductImage> productImageList = productService.createImage(product_id, productImageDTO);
         return ResponseEntity.ok(productImageList);
@@ -103,9 +112,9 @@ public class ProductController {
         return ResponseEntity.ok(productService.updateProduct(id, productDTO, auToken));
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Product> deleteProduct(@RequestParam int id,@RequestHeader("Authorization") String auToken){
-        return ResponseEntity.ok(productService.deleteProduct(id, auToken));
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Product> deleteProduct(@PathVariable int id){
+        return ResponseEntity.ok(productService.deleteProduct(id));
     }
 
 //    @PostMapping("/faker")

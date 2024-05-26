@@ -15,7 +15,7 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
     Optional<Product> findByName(String name);
     boolean existsByName(String name);
 
-    @Query("select p from Product p where (:keywords IS NULL OR :keywords = '' OR p.name LIKE %:keywords%)")
+    @Query("select p from Product p where (:keywords IS NULL OR :keywords = '' OR p.name LIKE %:keywords%) AND p.active = 1")
     Page<Product> searchProduct(@Param("keywords") String keywords, Pageable pageable);
 
     @Query("select p from Product p where p.productID in :productIDs")

@@ -13,12 +13,13 @@ import java.util.List;
 
 public interface ProductService {
     Page<Product> getProducts(String keywords, PageRequest pageRequest);
+    Page<Product> getAdminProducts(PageRequest pageRequest);
     List<Product> getALlProducts();
     Product getProductById(int id);
     Product getProductByName(String name);
     Product createProduct(ProductDTO productDTO) throws DataNotFound;
     Product updateProduct(int id, ProductDTO productDTO, String auToken);
-    Product deleteProduct(int id, String auToken);
+    Product deleteProduct(int id);
     List<ProductImage> createImage(int product_id, ProductImageDTO productImageDTO) throws Exception;
     boolean existsByName(String name);
     List<Product> generateProduct();

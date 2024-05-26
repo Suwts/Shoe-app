@@ -53,6 +53,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> getAdminProducts(PageRequest pageRequest) {
+        return productRepo.findAll(pageRequest);
+    }
+
+    @Override
     public List<Product> getALlProducts() {
         return productRepo.findAll();
     }
@@ -127,8 +132,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product deleteProduct(int id, String auToken) {
-        String token = auToken.substring(7);
+    public Product deleteProduct(int id) {
         Product product = productRepo.findByProductID(id).orElseThrow();
         product.setActive(0);
         return productRepo.save(product);
